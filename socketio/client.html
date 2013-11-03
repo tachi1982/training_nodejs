@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>socket.io sample</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      $(document).ready(function () {
+        var socket = io.connect();
+        var button = document.getElementById("button");
+        var ub = document.getElementById("ub");
+        var text = document.getElementById("text");
+        var log = document.getElementById("log");
+        var username = document.getElementById("username");
+        ub.addEventListener("click", function () {
+          socket.emit("set username", username.value);
+        });
+        button.addEventListener("click", function () {
+          socket.emit('set message', text.value );
+          log.value = username.value + " : " + text.value + "\n" + log.value;
+          text.value = '';
+        });
+        socket.on('broadcast message', function (data) {
+          log.value = data.message + "\n" + log.value;
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Socket.IO sample code 01</h1>
+    <textarea id="username" rows="1"></textarea>
+    <button id="ub">ub</button><br>
+    <textarea id="text"></textarea>
+    <button id="button">button</button><br>
+    <textarea id="log" readonly rows="10"></textarea>
+  </body>
+</html>
